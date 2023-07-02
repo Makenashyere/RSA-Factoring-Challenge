@@ -1,5 +1,35 @@
-#!/usr/bin/env bash
-# Factorize as many numbers as possible into a product of two smaller numbers.
+#include <stdio.h>
 
-gcc factors.c -o a
-./a $1
+void factorize(int number) {
+    printf("%d =", number);
+    
+    for (int i = 2; i <= number; i++) {
+        while (number % i == 0) {
+            printf(" %d", i);
+            number /= i;
+        }
+    }
+    
+    printf("\n");
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("Usage: ./a <file>\n");
+        return 1;
+    }
+
+    FILE *file = fopen(argv[1], "r");
+    if (file == NULL) {
+        printf("Error: Failed to open file '%s'\n", argv[1]);
+        return 1;
+    }
+
+    int number;
+    while (fscanf(file, "%d", &number) != EOF) {
+        factorize(number);
+    }
+
+    fclose(file);
+    return 0;
+}
